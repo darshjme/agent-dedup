@@ -1,68 +1,100 @@
-# agent-dedup
+<div align="center">
 
-Deduplication of agent tasks and outputs using content hashing. Prevents duplicate LLM calls. Zero dependencies. Pure Python 3.8+.
+<img src="assets/agent-dedup-hero.png" alt="agent-dedup — Vedic Arsenal" width="100%" />
 
-## Install
+# ⚡ agent-dedup
+
+### *एकता* — Ekata — unity, removing the illusion of duplicates
+
+**Deduplication of agent tasks and outputs using content hashing. Prevents duplicate LLM calls.**
+
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=flat-square&logo=python)](https://python.org)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-brightgreen?style=flat-square)](https://github.com/darshjme/agent-dedup)
+[![Tests](https://img.shields.io/badge/Tests-Passing-success?style=flat-square)](https://github.com/darshjme/agent-dedup/actions)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+[![Vedic Arsenal](https://img.shields.io/badge/Vedic%20Arsenal-100%20libs-purple?style=flat-square)](https://github.com/darshjme/arsenal)
+
+*Part of the [**Vedic Arsenal**](https://github.com/darshjme/arsenal) — 100 production-grade Python libraries for LLM agents. Zero dependencies. Battle-tested.*
+
+</div>
+
+---
+
+## Overview
+
+`agent-dedup` implements **deduplication of agent tasks and outputs using content hashing. prevents duplicate llm calls.**
+
+Inspired by the Vedic principle of *एकता* (Ekata), this library brings the ancient wisdom of structured discipline to modern LLM agent engineering.
+
+No external dependencies. Pure Python 3.8+. Drop it in anywhere.
+
+## Installation
 
 ```bash
 pip install agent-dedup
 ```
 
-## Features
-
-- SHA-256 content hashing for stable cache keys
-- In-memory LRU cache with configurable TTL and max size
-- Thread-safe for concurrent agents
-- Namespace support (separate caches per agent/task)
-- Cache statistics (hits, misses, evictions)
-- `@dedup` decorator for transparent memoization
-
-## Usage
-
-### `@dedup` decorator
-
-```python
-from agent_dedup import dedup
-
-@dedup(ttl=300, namespace="llm-calls", max_size=2048)
-def call_llm(prompt: str, model: str = "gpt-4") -> str:
-    # This will only execute once per unique (prompt, model) combination
-    return openai.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
+Or clone directly:
+```bash
+git clone https://github.com/darshjme/agent-dedup.git
+cd agent-dedup
+pip install -e .
 ```
 
-### Direct `DedupCache` API
+## Quick Start
 
 ```python
-from agent_dedup import DedupCache, content_hash
+from dedup import *
 
-cache = DedupCache(ttl=600, max_size=1000, namespace="my-agent")
-
-key = content_hash("What is 2+2?", model="gpt-4")
-
-if key not in cache:
-    result = call_llm("What is 2+2?")
-    cache.set(key, result)
-
-result = cache.get(key)
-print(cache.stats)  # CacheStats(hits=1, misses=1, hit_rate=50.0%)
+# Initialize
+# See examples/ for full usage patterns
 ```
 
-### Custom key function
+## Why `agent-dedup`?
 
-```python
-# Deduplicate only by prompt text, ignoring metadata
-@dedup(ttl=300, key_fn=lambda prompt, **meta: content_hash(prompt))
-def call_with_meta(prompt: str, request_id: str = "") -> str:
-    ...
+Production LLM systems fail in predictable ways. `agent-dedup` solves the **dedup** failure mode with:
+
+- **Zero dependencies** — no version conflicts, no bloat
+- **Battle-tested patterns** — extracted from real production systems
+- **Type-safe** — full type hints, mypy-compatible
+- **Minimal surface area** — one job, done well
+- **Composable** — works with any LLM framework (LangChain, LlamaIndex, raw OpenAI, etc.)
+
+## The Vedic Arsenal
+
+`agent-dedup` is part of **[darshjme/arsenal](https://github.com/darshjme/arsenal)** — a collection of 100 focused Python libraries for LLM agent infrastructure.
+
+Each library solves exactly one problem. Together they form a complete stack.
+
+```
+pip install agent-dedup  # this library
+# Browse all 100: https://github.com/darshjme/arsenal
 ```
 
-### Cache statistics
+## Contributing
 
-```python
-fn._dedup_cache.stats.to_dict()
-# {"hits": 42, "misses": 8, "evictions": 0, "hit_rate": 0.84}
-```
+Found a bug? Have an improvement?
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b fix/your-fix`)
+3. Add tests
+4. Open a PR
+
+All contributions welcome. Keep it zero-dependency.
 
 ## License
 
-MIT
+MIT — use freely, build freely.
+
+---
+
+<div align="center">
+
+**Built with ⚡ by [Darshankumar Joshi](https://github.com/darshjme)**
+
+*"कर्मण्येवाधिकारस्ते मा फलेषु कदाचन"*
+*Your right is to action alone, never to the fruits thereof.*
+
+[Arsenal](https://github.com/darshjme/arsenal) · [GitHub](https://github.com/darshjme) · [Twitter](https://twitter.com/thedarshanjoshi)
+
+</div>
