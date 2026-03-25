@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-dedup"
+version = "0.1.0"
+description = "Deduplication of agent tasks and outputs using content hashing. Prevents duplicate LLM calls."
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/darshjme/agent-dedup"
+
+[tool.setuptools.packages.find]
+where = ["src"]
